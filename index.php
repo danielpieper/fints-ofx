@@ -23,36 +23,35 @@ $climate->arguments->add([
         'castTo' => 'int',
     ],
     'code' => [
-        'prefix' => 'c',
         'longPrefix' => 'code',
         'description' => 'Bank routing code',
     ],
     'account' => [
-        'prefix' => 'a',
         'longPrefix' => 'account',
         'description' => 'Bank account number',
     ],
     'user' => [
-        'prefix' => 'u',
         'longPrefix' => 'user',
         'description' => 'username or account number',
     ],
     'pin' => [
-        'prefix' => 'p',
         'longPrefix' => 'pin',
         'description' => 'PIN',
     ],
     'from' => [
-        'prefix' => 'f',
         'longPrefix' => 'from',
         'description' => 'From date',
         'defaultValue' => '2 weeks ago',
     ],
     'to' => [
-        'prefix' => 't',
         'longPrefix' => 'to',
         'description' => 'To date',
         'defaultValue' => 'today',
+    ],
+    'file' => [
+        'longPrefix' => 'file',
+        'description' => 'Output ofx filename',
+        'defaultValue' => 'php://stdout',
     ],
     'verbose' => [
         'prefix' => 'v',
@@ -108,16 +107,29 @@ $soa = $fintsClient->getStatementOfAccount(
     (new \DateTime($configuration['from'])),
     (new \DateTime($configuration['to']))
 );
-$ofxWriter = new OFXWriter();
+$ofxWriter = new OFXWriter($configuration['file']);
 $ofxWriter->startDocument();
 $ofxWriter->writeSignOnMessageSet();
 $ofxWriter->startBankingMessageSet();
 $ofxWriter->startStatementTransactionWrapper();
 $ofxWriter->startStatementResponse($account);
 $ofxWriter->startStatementTransactionAggregate($soa);
+$transactionTable = [];
+$numberFormatter = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
 foreach ($soa->getStatements() as $statement) {
     foreach ($statement->getTransactions() as $transaction) {
-         $ofxWriter->writeStatementTransaction($transaction);
+        $ofxWriter->writeStatementTransaction($transaction);
+        if ($configuration['verbose']) {
+            $amount = $transaction->getAmount();
+            if ($transaction->getCreditDebit() == Transaction::CD_DEBIT) {
+                $amount *= -1;
+            }
+            $transactionTable[] = [
+               'date' => $transaction->getBookingDate()->format('d.m.Y'),
+               'name' => $transaction->getName(),
+               'amount' => $numberFormatter->formatCurrency($amount, $account->getCurrency()),
+            ];
+        }
     }
 }
 $ofxWriter->endStatementTransactionAggregate();
@@ -125,6 +137,9 @@ $ofxWriter->endStatementResponse();
 $ofxWriter->endStatementTransactionWrapper();
 $ofxWriter->endBankingMessageSet();
 $ofxWriter->endDocument();
+if ($configuration['verbose']) {
+    $climate->table($transactionTable);
+}
 
 function getConfiguration(CLImate &$climate)
 {
@@ -137,6 +152,7 @@ function getConfiguration(CLImate &$climate)
         'pin' => null,
         'from' => $climate->arguments->get('from'),
         'to' => $climate->arguments->get('to'),
+        'file' => $climate->arguments->get('file'),
         'verbose' => $climate->arguments->get('verbose'),
     ];
     // get url:
@@ -192,6 +208,7 @@ function getConfiguration(CLImate &$climate)
             ->that($configuration['pin'], 'pin')->notEmpty()
             ->that($configuration['from'], 'from')->notEmpty()
             ->that($configuration['to'], 'to')->notEmpty()
+            ->that($configuration['file'], 'file')->notEmpty()
             ->verifyNow();
     } catch (AssertionFailedException $e) {
         $climate->error($e->getMessage());

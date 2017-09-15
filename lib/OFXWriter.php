@@ -7,9 +7,9 @@ use Fhp\Model\StatementOfAccount\Transaction;
 
 class OFXWriter extends \XMLWriter
 {
-    public function __construct()
+    public function __construct($file)
     {
-        $this->openURI('php://stdout');
+        $this->openURI($file);
         $this->setIndent(true);
         $this->setIndentString('  ');
     }
