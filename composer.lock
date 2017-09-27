@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1103a5c3659ce196b30fc42a1150745",
+    "content-hash": "b1bce2633a56f7e0a3156d783ed864d5",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -113,16 +113,16 @@
             "time": "2016-04-04T20:24:59+00:00"
         },
         {
-            "name": "nemiah/php-fints",
+            "name": "mschindler83/fints-hbci-php",
             "version": "1.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nemiah/phpFinTS.git",
+                "url": "https://github.com/mschindler83/fints-hbci-php.git",
                 "reference": "e58cb825c178d4c39a8974a9dd93abbc8094551f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/e58cb825c178d4c39a8974a9dd93abbc8094551f",
+                "url": "https://api.github.com/repos/mschindler83/fints-hbci-php/zipball/e58cb825c178d4c39a8974a9dd93abbc8094551f",
                 "reference": "e58cb825c178d4c39a8974a9dd93abbc8094551f",
                 "shasum": ""
             },
@@ -252,7 +252,8 @@
     "platform": {
         "php": ">=7.0",
         "ext-iconv": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-intl": "*"
     },
     "platform-dev": []
 }

@@ -8,3 +8,4 @@ composer.phar
 *.sublime-project
 *.sublime-workspace
 .phpintel
+.idea
