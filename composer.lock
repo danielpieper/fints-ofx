@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1bce2633a56f7e0a3156d783ed864d5",
+    "content-hash": "3273ecff9a84023ecf80c28687d368b0",
     "packages": [
         {
             "name": "beberlei/assert",
-            "version": "v2.7.9",
+            "version": "v2.7.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "5a9dffba3edc2342c9cea2f1b9dc147473b796a9"
+                "reference": "53991547d6f0b8c81354fb2d098dcb71e81678cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/5a9dffba3edc2342c9cea2f1b9dc147473b796a9",
-                "reference": "5a9dffba3edc2342c9cea2f1b9dc147473b796a9",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/53991547d6f0b8c81354fb2d098dcb71e81678cb",
+                "reference": "53991547d6f0b8c81354fb2d098dcb71e81678cb",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.1.1",
-                "phpunit/phpunit": "^4|^5"
+                "phpunit/phpunit": "^4.8.35|^5.7"
             },
             "type": "library",
             "autoload": {
@@ -59,7 +59,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2017-11-13T16:46:12+00:00"
+            "time": "2017-11-13T18:35:09+00:00"
         },
         {
             "name": "league/climate",
@@ -113,16 +113,16 @@
             "time": "2016-04-04T20:24:59+00:00"
         },
         {
-            "name": "mschindler83/fints-hbci-php",
+            "name": "nemiah/php-fints",
             "version": "1.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mschindler83/fints-hbci-php.git",
+                "url": "https://github.com/nemiah/phpFinTS.git",
                 "reference": "e58cb825c178d4c39a8974a9dd93abbc8094551f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mschindler83/fints-hbci-php/zipball/e58cb825c178d4c39a8974a9dd93abbc8094551f",
+                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/e58cb825c178d4c39a8974a9dd93abbc8094551f",
                 "reference": "e58cb825c178d4c39a8974a9dd93abbc8094551f",
                 "shasum": ""
             },

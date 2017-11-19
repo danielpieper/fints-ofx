@@ -12,7 +12,7 @@
     "ext-iconv": "*",
     "ext-curl": "*",
     "ext-intl": "*",
-    "mschindler83/fints-hbci-php": "~1.0",
+    "nemiah/php-fints": "^1.0.4",
     "league/climate": "^3.2",
     "beberlei/assert": "^2.7"
   },
