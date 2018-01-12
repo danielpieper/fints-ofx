@@ -2,9 +2,16 @@
   "name": "danielpieper/fints-ofx",
   "description": "A simple fints to ofx file exporter",
   "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Daniel Pieper",
+      "email": "github@daniel-pieper.com"
+    }
+  ],
   "autoload": {
-    "psr-4": {
-      "Lib\\": "lib/"
+    "psr-0": {
+      "FintsOfx": "src"
     }
   },
   "require": {
@@ -14,14 +21,8 @@
     "ext-intl": "*",
     "nemiah/php-fints": "^1.0.4",
     "league/climate": "^3.2",
-    "beberlei/assert": "^2.7"
+    "beberlei/assert": "^2.7",
+    "symfony/console": "^4.0.3"
   },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Daniel Pieper",
-      "email": "github@daniel-pieper.com"
-    }
-  ],
   "minimum-stability": "stable"
 }
