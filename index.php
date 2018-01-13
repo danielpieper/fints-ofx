@@ -12,40 +12,10 @@ use Lib\OFXWriter;
 $climate = new CLImate();
 $climate->description('Export bank account statements via fints to open finance exchange (ofx) files');
 $climate->arguments->add([
-    'url' => [
-        'longPrefix' => 'url',
-        'description' => 'Bank FinTS url',
-    ],
-    'port' => [
-        'longPrefix' => 'port',
-        'description' => 'Bank FinTS port',
-        'castTo' => 'int',
-    ],
-    'code' => [
-        'longPrefix' => 'code',
-        'description' => 'Bank routing code',
-    ],
-    'account' => [
-        'longPrefix' => 'account',
-        'description' => 'Bank account number',
-    ],
-    'user' => [
-        'longPrefix' => 'user',
-        'description' => 'username or account number',
-    ],
-    'pin' => [
-        'longPrefix' => 'pin',
-        'description' => 'PIN',
-    ],
-    'from' => [
-        'longPrefix' => 'from',
-        'description' => 'From date',
-        'defaultValue' => '2 weeks ago',
-    ],
-    'to' => [
-        'longPrefix' => 'to',
-        'description' => 'To date',
-        'defaultValue' => 'today',
+    'config' => [
+        'longPrefix' => 'config',
+        'description' => 'Configuration file',
+        'defaultValue' => 'config.yaml',
     ],
     'file' => [
         'longPrefix' => 'file',
@@ -73,6 +43,7 @@ if ($climate->arguments->get('help')) {
     exit(0);
 }
 $configuration = getConfiguration($climate);
+var_dump($configuration); die();
 
 $fintsClient = new FinTs(
     $configuration['url'],
