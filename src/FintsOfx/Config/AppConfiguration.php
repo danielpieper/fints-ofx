@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Lib;
+namespace FintsOfx\Config;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -10,6 +10,7 @@ class AppConfiguration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('app');
+
         $rootNode
             ->fixXmlConfig('institution')
             ->children()
