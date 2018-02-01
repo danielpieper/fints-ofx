@@ -5,7 +5,6 @@ require __DIR__.'/../vendor/autoload.php';
 
 use FintsOfx\Command;
 use FintsOfx\Config\AppConfiguration;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Yaml;
@@ -17,13 +16,14 @@ $config = Yaml::parseFile(__DIR__ . '/../config.yaml');
 //            [
 //                'from' => $climate->arguments->get('from'),
 //                'to' => $climate->arguments->get('to'),
-//                'file' => $climate->arguments->get('file'),
-//                'verbose' => $climate->arguments->get('verbose'),
 //            ]
 $processor = new Processor();
 $configuration = new AppConfiguration();
 $processedConfiguration = $processor->processConfiguration($configuration, [$config]);
-var_dump($processedConfiguration);
+$processedConfiguration['from'] = '1 month ago';
+$processedConfiguration['to'] = 'now';
 
-$app->add(new Command\ExportCommand(null, $processedConfiguration));
+$command = new Command\ExportCommand(null, $processedConfiguration);
+$app->add($command);
+$app->setDefaultCommand($command->getName());
 $app->run();

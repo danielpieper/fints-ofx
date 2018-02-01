@@ -25,6 +25,7 @@ class AppConfiguration implements ConfigurationInterface
                             ->scalarNode('bic')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('username')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('password')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('currency')->isRequired()->cannotBeEmpty()->end()
                             ->arrayNode('accounts')
                                 ->requiresAtLeastOneElement()
                                 ->arrayPrototype()

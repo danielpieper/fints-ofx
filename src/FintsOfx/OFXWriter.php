@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Lib;
+namespace FintsOfx;
 
 use Fhp\Model\Account;
 use Fhp\Model\StatementOfAccount\StatementOfAccount;
