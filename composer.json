@@ -1,6 +1,7 @@
 {
   "name": "danielpieper/fints-ofx",
   "description": "A simple fints to ofx file exporter",
+  "keywords": ["fints", "hbci", "ofx", "ynab"],
   "type": "project",
   "license": "MIT",
   "authors": [
@@ -14,17 +15,23 @@
       "FintsOfx": "src"
     }
   },
+  "require-dev": {
+    "humbug/box": "^3.0@dev",
+    "phpunit/phpunit": "^6.0"
+  },
   "require": {
     "php": ">=7.0",
     "ext-iconv": "*",
     "ext-curl": "*",
     "ext-intl": "*",
     "nemiah/php-fints": "^1.0.4",
-    "league/climate": "^3.2",
-    "beberlei/assert": "^2.7",
+    "moneyphp/money": "^3.1.1",
     "symfony/console": "^4.0.3",
     "symfony/config": "^4.0.3",
     "symfony/yaml": "^4.0.3"
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "bin": [
+    "bin/fintsofx"
+  ]
 }

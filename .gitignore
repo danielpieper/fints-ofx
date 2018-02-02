@@ -9,3 +9,4 @@ config.yaml
 *.sublime-project
 *.sublime-workspace
 .idea
+*.ofx

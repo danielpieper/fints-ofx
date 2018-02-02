@@ -4,14 +4,20 @@ namespace FintsOfx;
 use Fhp\Model\Account;
 use Fhp\Model\StatementOfAccount\StatementOfAccount;
 use Fhp\Model\StatementOfAccount\Transaction;
+use Money\Currency;
+use Money\Money;
+use Money\MoneyFormatter;
 
 class OFXWriter extends \XMLWriter
 {
-    public function __construct($file)
+    private $moneyFormatter;
+
+    public function __construct($file, MoneyFormatter $moneyFormatter)
     {
         $this->openURI($file);
         $this->setIndent(true);
         $this->setIndentString('  ');
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     public function startDocument($version = '1.0', $encoding = 'UTF-8', $standalone = null)
@@ -108,15 +114,17 @@ class OFXWriter extends \XMLWriter
         $this->endElement(); // BANKTRANLIST
     }
 
-    public function writeStatementTransaction(Transaction $transaction)
+    public function writeStatementTransaction(Account $account, Transaction $transaction)
     {
         $this->startElement('STMTTRN');
 
         $this->writeElement('TRNTYPE', strtoupper($transaction->getCreditDebit()));
         $this->writeDateTimeElement('DTPOSTED', $transaction->getBookingDate());
+        $amount = ($transaction->getCreditDebit() == Transaction::CD_DEBIT ? -100 : 100) * $transaction->getAmount();
+        $money = new Money($amount, new Currency($account->getCurrency()));
         $this->writeElement(
             'TRNAMT',
-            ($transaction->getCreditDebit() == Transaction::CD_DEBIT ? '-' : '') . $transaction->getAmount()
+            $this->moneyFormatter->format($money)
         );
         $this->writeElement('FITID', md5($transaction->getDescription1()));
         $this->writeElement('NAME', $transaction->getName());

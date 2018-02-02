@@ -4,26 +4,10 @@
 require __DIR__.'/../vendor/autoload.php';
 
 use FintsOfx\Command;
-use FintsOfx\Config\AppConfiguration;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Yaml\Yaml;
 
 $app = new Application('FintsOfx', '@package_version@');
 
-// Load configuration
-$config = Yaml::parseFile(__DIR__ . '/../config.yaml');
-//            [
-//                'from' => $climate->arguments->get('from'),
-//                'to' => $climate->arguments->get('to'),
-//            ]
-$processor = new Processor();
-$configuration = new AppConfiguration();
-$processedConfiguration = $processor->processConfiguration($configuration, [$config]);
-$processedConfiguration['from'] = '1 month ago';
-$processedConfiguration['to'] = 'now';
-
-$command = new Command\ExportCommand(null, $processedConfiguration);
-$app->add($command);
-$app->setDefaultCommand($command->getName());
+$app->add(new Command\ConfigureCommand('configure'));
+$app->add(new Command\ExportCommand('export'));
 $app->run();
