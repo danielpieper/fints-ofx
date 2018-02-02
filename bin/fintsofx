@@ -3,7 +3,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use FintsOfx\Command;
+use danielpieper\FintsOfx\Command;
 use Symfony\Component\Console\Application;
 
 $app = new Application('FintsOfx', '@package_version@');

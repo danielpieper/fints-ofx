@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
-namespace FintsOfx\Config;
+
+namespace danielpieper\FintsOfx\Config;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

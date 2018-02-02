@@ -1,7 +1,12 @@
 {
   "name": "danielpieper/fints-ofx",
   "description": "A simple fints to ofx file exporter",
-  "keywords": ["fints", "hbci", "ofx", "ynab"],
+  "keywords": [
+    "fints",
+    "hbci",
+    "ofx",
+    "ynab"
+  ],
   "type": "project",
   "license": "MIT",
   "authors": [
@@ -11,12 +16,12 @@
     }
   ],
   "autoload": {
-    "psr-0": {
-      "FintsOfx": "src"
+    "psr-4": {
+      "danielpieper\\FintsOfx\\": "src"
     }
   },
   "require-dev": {
-    "humbug/box": "^3.0@dev",
+    "infection/infection": "^0.7.0",
     "phpunit/phpunit": "^6.0"
   },
   "require": {

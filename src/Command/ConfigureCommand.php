@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FintsOfx\Command;
+namespace danielpieper\FintsOfx\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

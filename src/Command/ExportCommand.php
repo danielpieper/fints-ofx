@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FintsOfx\Command;
+namespace danielpieper\FintsOfx\Command;
 
 use Fhp\FinTs;
 use Fhp\Model\Account;
@@ -14,13 +14,12 @@ use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\GlobFileLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
-use FintsOfx\Config\AppConfiguration;
+use danielpieper\FintsOfx\Config\AppConfiguration;
 use Symfony\Component\Config\Definition\Processor;
 
 class ExportCommand extends Command
