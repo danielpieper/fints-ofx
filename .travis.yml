@@ -1,0 +1,42 @@
+language: php
+
+sudo: false
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+matrix:
+  include:
+    - php: '7.1'
+      env: COVERAGE='true'
+    - php: '7.1'
+    - php: nightly
+  allow_failures:
+    - php: nightly
+  fast_finish: true
+
+before_install:
+    - |
+      if [ "$COVERAGE" != "true" ]; then
+          phpenv config-rm xdebug.ini || true
+      fi
+
+install:
+  - set -eo pipefail
+  - composer update --no-interaction --no-progress --no-suggest --prefer-dist $COMPOSER_FLAGS
+
+script:
+  - |
+    if [ "$COVERAGE" == "true" ]; then
+        make tc
+    else
+        make test
+    fi
+
+notifications:
+    email: false
