@@ -49,11 +49,11 @@ tu: vendor/bin/phpunit
 
 tc:		## Run the unit tests with code coverage
 tc: vendor/bin/phpunit
-	php -d zend_extension=xdebug.so vendor/bin/phpunit --coverage-html=dist/coverage --coverage-text
+	phpdbg -qrr vendor/bin/phpunit --coverage-html=dist/coverage --coverage-text
 
 tm:		## Run Infection
 tm:	vendor/bin/phpunit
-	php vendor/bin/infection
+	phpdbg -qrr vendor/bin/infection
 
 ##
 ## Rules from files

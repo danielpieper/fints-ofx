@@ -13,6 +13,9 @@ class OFXWriter extends \XMLWriter
 {
     private $moneyFormatter;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($file, MoneyFormatter $moneyFormatter)
     {
         $this->openURI($file);
@@ -21,26 +24,29 @@ class OFXWriter extends \XMLWriter
         $this->moneyFormatter = $moneyFormatter;
     }
 
-    public function startDocument($version = '1.0', $encoding = 'UTF-8', $standalone = null)
+    public function startDocument($version = '1.0', $encoding = 'UTF-8', $standalone = null) : void
     {
         parent::startDocument($version, $encoding, $standalone);
         $this->writePi('OFX', 'OFXHEADER="200" VERSION="220" SECURITY="NONE" OLDFILEUID="NONE" NEWFILEUID="NONE"');
         $this->startElement('OFX');
     }
 
-    public function endDocument()
+    public function endDocument() : void
     {
         $this->endElement(); // OFX
         parent::endDocument();
     }
 
-    public function writeDateTimeElement($name, \DateTime $date)
+    public function writeDateTimeElement($name, \DateTime $date) : void
     {
         $this->writeElement($name, $date->format('YmdHis'));
     }
 
-    public function writeSignOnMessageSet()
+    public function writeSignOnMessageSet(\DateTime $dtServerDateTime = null) : void
     {
+        if (!$dtServerDateTime) {
+            $dtServerDateTime = new \DateTime('now');
+        }
         $this->startElement('SIGNONMSGSRSV1');
         $this->startElement('SONRS');
 
@@ -48,24 +54,24 @@ class OFXWriter extends \XMLWriter
         $this->writeElement('CODE', '0');
         $this->writeElement('SEVERITY', 'INFO');
         $this->endElement(); // STATUS
-        $this->writeDateTimeElement('DTSERVER', new \DateTime('now'));
+        $this->writeDateTimeElement('DTSERVER', $dtServerDateTime);
         $this->writeElement('LANGUAGE', 'GER');
 
         $this->endElement(); // SONRS
         $this->endElement(); // SIGNONMSGSRSV1
     }
 
-    public function startBankingMessageSet()
+    public function startBankingMessageSet() : void
     {
         $this->startElement('BANKMSGSRSV1');
     }
 
-    public function endBankingMessageSet()
+    public function endBankingMessageSet() : void
     {
         $this->endElement(); // BANKMSGSRSV1
     }
 
-    public function startStatementTransactionWrapper()
+    public function startStatementTransactionWrapper() : void
     {
         $this->startElement('STMTTRNRS');
 
@@ -76,12 +82,12 @@ class OFXWriter extends \XMLWriter
         $this->endElement(); // STATUS
     }
 
-    public function endStatementTransactionWrapper()
+    public function endStatementTransactionWrapper() : void
     {
         $this->endElement(); // STMTTRNRS
     }
 
-    public function startStatementResponse(Account $account)
+    public function startStatemetResponse(Account $account) : void
     {
         $this->startElement('STMTRS');
         $this->writeElement('CURDEF', $account->getCurrency());
@@ -93,12 +99,12 @@ class OFXWriter extends \XMLWriter
         $this->endElement(); // BANKACCTFROM
     }
 
-    public function endStatementResponse()
+    public function endStatementResponse() : void
     {
         $this->endElement(); // STMTRS
     }
 
-    public function startStatementTransactionAggregate(StatementOfAccount $statementOfAccount)
+    public function startStatementTransactionAggregate(StatementOfAccount $statementOfAccount) : void
     {
         $this->startElement('BANKTRANLIST');
         $statements = $statementOfAccount->getStatements();
@@ -110,12 +116,12 @@ class OFXWriter extends \XMLWriter
         }
     }
 
-    public function endStatementTransactionAggregate()
+    public function endStatementTransactionAggregate() : void
     {
         $this->endElement(); // BANKTRANLIST
     }
 
-    public function writeStatementTransaction(Account $account, Transaction $transaction)
+    public function writeStatementTransaction(Account $account, Transaction $transaction) : void
     {
         $this->startElement('STMTTRN');
 
