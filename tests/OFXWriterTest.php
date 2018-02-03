@@ -20,7 +20,7 @@ class OFXWriterTest extends TestCase
         $ofxWriter->endDocument();
 
         $actual = file_get_contents($filename);
-        $expected = file_get_contents(__DIR__ . '/../fixtures/empty_document.ofx');
+        $expected = file_get_contents(__DIR__ . '/../fixtures/empty_document.txt');
         $this->assertSame($expected, $actual);
     }
 }
