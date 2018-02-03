@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?OFX OFXHEADER="200" VERSION="220" SECURITY="NONE" OLDFILEUID="NONE" NEWFILEUID="NONE"?>
+<OFX>
+  <STMTTRN>
+    <TRNTYPE>{credit_debit}</TRNTYPE>
+    <DTPOSTED>{booking_date}</DTPOSTED>
+    <TRNAMT>{amount}</TRNAMT>
+    <FITID>{checksum}</FITID>
+    <NAME>{name}</NAME>
+  </STMTTRN>
+</OFX>

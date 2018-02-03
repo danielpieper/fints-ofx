@@ -8,8 +8,11 @@ use Faker\Generator;
 use Fhp\Model\Account;
 use Fhp\Model\StatementOfAccount\Statement;
 use Fhp\Model\StatementOfAccount\StatementOfAccount;
+use Fhp\Model\StatementOfAccount\Transaction;
 use Money\Currencies\ISOCurrencies;
+use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
+use Money\Money;
 use Money\MoneyFormatter;
 use PHPUnit\Framework\TestCase;
 
@@ -159,6 +162,42 @@ class OFXWriterTest extends TestCase
         $this->ofxWriter->startDocument();
         $this->ofxWriter->startStatementTransactionAggregate($statementOfAccountModel);
         $this->ofxWriter->endStatementTransactionAggregate();
+        $this->ofxWriter->endDocument();
+
+        $actual = file_get_contents($this->filename);
+        $this->assertSame($expected, $actual);
+    }
+
+    public function testStatementTransaction(): void
+    {
+        $accountModel = new Account();
+        $accountModel->setCurrency($this->faker->currencyCode);
+        $accountModel->setAccountNumber($this->faker->bankAccountNumber);
+        $accountModel->setBankCode($this->faker->randomNumber(5));
+
+        $transactionModel = new Transaction();
+        $transactionModel->setAmount($this->faker->numberBetween(100));
+        $transactionModel->setCreditDebit($this->faker->randomElement([
+            Transaction::CD_CREDIT,
+            Transaction::CD_DEBIT,
+        ]));
+        $transactionModel->setBookingDate($this->faker->dateTimeThisDecade());
+        $transactionModel->setDescription1($this->faker->text());
+        $transactionModel->setName($this->faker->name());
+
+        $amount = ($transactionModel->getCreditDebit() == Transaction::CD_DEBIT ? -100 : 100) * $transactionModel->getAmount();
+        $money = new Money($amount, new Currency($accountModel->getCurrency()));
+        $template = file_get_contents(__DIR__ . '/fixtures/ofx/statement_transaction.txt');
+        $expected = strtr($template, [
+            '{credit_debit}' => strtoupper($transactionModel->getCreditDebit()),
+            '{booking_date}' => $transactionModel->getBookingDate()->format('YmdHis'),
+            '{amount}' => $this->moneyFormatter->format($money),
+            '{checksum}' => md5($transactionModel->getDescription1()),
+            '{name}' => $transactionModel->getName(),
+        ]);
+
+        $this->ofxWriter->startDocument();
+        $this->ofxWriter->writeStatementTransaction($accountModel, $transactionModel);
         $this->ofxWriter->endDocument();
 
         $actual = file_get_contents($this->filename);
