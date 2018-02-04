@@ -13,10 +13,6 @@ clean:		## Clean all created artifacts
 clean:
 	git clean --exclude=.idea/ -fdx
 
-cs:		## Fix CS
-cs: vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer
-	php vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer fix
-
 build:		## Build the PHAR
 build:
 	# Cleanup existing artefacts
@@ -70,9 +66,6 @@ vendor/bamarni: composer.lock
 
 vendor/bin/phpunit: composer.lock
 	composer install
-
-vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer: vendor/bamarni
-	composer bin php-cs-fixer install
 
 fintsofx.phar: src vendor
 	$(MAKE) build
