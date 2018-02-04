@@ -87,7 +87,7 @@ class OFXWriter extends \XMLWriter
         $this->endElement(); // STMTTRNRS
     }
 
-    public function startStatemetResponse(Account $account) : void
+    public function startStatementResponse(Account $account) : void
     {
         $this->startElement('STMTRS');
         $this->writeElement('CURDEF', $account->getCurrency());

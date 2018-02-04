@@ -13,8 +13,9 @@ class AppConfiguration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('app');
 
         $rootNode
-            ->fixXmlConfig('institution')
             ->children()
+                ->scalarNode('start_date')->isRequired()->cannotBeEmpty()->defaultValue('1 month ago')->end()
+                ->scalarNode('end_date')->isRequired()->cannotBeEmpty()->defaultValue('now')->end()
                 ->arrayNode('institutions')
                     ->requiresAtLeastOneElement()
                     ->arrayPrototype()

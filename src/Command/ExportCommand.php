@@ -6,7 +6,7 @@ use Fhp\FinTs;
 use Fhp\Model\Account;
 use Fhp\Model\SEPAAccount;
 use Fhp\Model\StatementOfAccount\Transaction;
-use FintsOfx\OFXWriter;
+use danielpieper\FintsOfx\OFXWriter;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
@@ -50,15 +50,9 @@ class ExportCommand extends Command
 
         // Load configuration
         $config = Yaml::parseFile($configFile);
-        //            [
-        //                'from' => $climate->arguments->get('from'),
-        //                'to' => $climate->arguments->get('to'),
-        //            ]
         $processor = new Processor();
         $configuration = new AppConfiguration();
         $processedConfiguration = $processor->processConfiguration($configuration, [$config]);
-        $processedConfiguration['from'] = '1 month ago';
-        $processedConfiguration['to'] = 'now';
 
         $currencies = new ISOCurrencies();
         $moneyFormatter = new IntlMoneyFormatter(
@@ -87,20 +81,20 @@ class ExportCommand extends Command
                 $accountModel->setAccountNumber($account['number']);
                 $accountModel->setBankCode($institution['code']);
 
-                $from = new \DateTime($processedConfiguration['from']);
-                $to = new \DateTime($processedConfiguration['to']);
+                $startDate = new \DateTime($processedConfiguration['start_date']);
+                $endDate = new \DateTime($processedConfiguration['end_date']);
 
                 $soa = $fintsClient->getStatementOfAccount(
                     $sepaAccountModel,
-                    $from,
-                    $to
+                    $startDate,
+                    $endDate
                 );
 
                 $filename = sprintf(
                     "%s_%s_%s.ofx",
                     strtolower(strtr($account['name'], [' ' => '_'])),
-                    $from->format('Y-m-d'),
-                    $to->format('Y-m-d')
+                    $startDate->format('Y-m-d'),
+                    $endDate->format('Y-m-d')
                 );
 
                 $table = null;
@@ -120,7 +114,9 @@ class ExportCommand extends Command
                     foreach ($statement->getTransactions() as $transaction) {
                         $ofxWriter->writeStatementTransaction($accountModel, $transaction);
                         if ($output->isVerbose() && $table) {
-                            $amount = ($transaction->getCreditDebit() == Transaction::CD_DEBIT ? -100 : 100) * $transaction->getAmount();
+                            $amount =
+                                ($transaction->getCreditDebit() == Transaction::CD_DEBIT ? -100 : 100)
+                                * $transaction->getAmount();
                             $money = new Money($amount, new Currency($accountModel->getCurrency()));
                             $table->addRow([
                                 $transaction->getBookingDate()->format('Y-m-d'),
