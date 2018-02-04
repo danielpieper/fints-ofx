@@ -122,7 +122,7 @@ class OFXWriterTest extends TestCase
         $accountModel->setBankCode($this->faker->randomNumber(5));
 
         $this->ofxWriter->startDocument();
-        $this->ofxWriter->startStatemetResponse($accountModel);
+        $this->ofxWriter->startStatementResponse($accountModel);
         $this->ofxWriter->endStatementResponse();
         $this->ofxWriter->endDocument();
 
@@ -168,7 +168,7 @@ class OFXWriterTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testStatementTransaction(): void
+    public function testWriteStatementTransaction(): void
     {
         $accountModel = new Account();
         $accountModel->setCurrency($this->faker->currencyCode);
@@ -185,7 +185,9 @@ class OFXWriterTest extends TestCase
         $transactionModel->setDescription1($this->faker->text());
         $transactionModel->setName($this->faker->name());
 
-        $amount = ($transactionModel->getCreditDebit() == Transaction::CD_DEBIT ? -100 : 100) * $transactionModel->getAmount();
+        $amount =
+            ($transactionModel->getCreditDebit() == Transaction::CD_DEBIT ? -100 : 100)
+            * $transactionModel->getAmount();
         $money = new Money($amount, new Currency($accountModel->getCurrency()));
         $template = file_get_contents(__DIR__ . '/fixtures/ofx/statement_transaction.txt');
         $expected = strtr($template, [
