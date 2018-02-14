@@ -19,6 +19,8 @@ class ConfigureCommand extends BaseCommand
      * @param OutputInterface $output
      * @return int|null|void
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -47,7 +49,7 @@ institutions:
         number: 
         iban: 
 EOF
-;
+        ;
         file_put_contents($filename, $config);
         $output->writeln('Configuration template saved as config.yaml');
     }

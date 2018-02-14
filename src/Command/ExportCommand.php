@@ -34,6 +34,8 @@ class ExportCommand extends BaseCommand
      * @param OutputInterface $output
      * @return int|null|void
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -46,18 +48,19 @@ class ExportCommand extends BaseCommand
         }
 
         // Load configuration
-        $config = Yaml::parseFile($filename);
-        $processor = new Processor();
-        $configuration = new AppConfiguration();
-        $processedConfiguration = $processor->processConfiguration($configuration, [$config]);
+        $configFile = Yaml::parseFile($filename);
+        $config = (new Processor())->processConfiguration(
+            new AppConfiguration(),
+            [$configFile]
+        );
 
         $currencies = new ISOCurrencies();
         $moneyFormatter = new IntlMoneyFormatter(
             new \NumberFormatter('en_US', \NumberFormatter::DECIMAL),
             $currencies
         );
-        $decimalMoneyFormatter = new DecimalMoneyFormatter($currencies);
-        foreach ($processedConfiguration['institutions'] as $institution) {
+        $decimalFormatter = new DecimalMoneyFormatter($currencies);
+        foreach ($config['institutions'] as $institution) {
             $fintsClient = new FinTs(
                 $institution['url'],
                 $institution['port'],
@@ -78,8 +81,8 @@ class ExportCommand extends BaseCommand
                 $accountModel->setAccountNumber($account['number']);
                 $accountModel->setBankCode($institution['code']);
 
-                $startDate = new \DateTime($processedConfiguration['start_date']);
-                $endDate = new \DateTime($processedConfiguration['end_date']);
+                $startDate = new \DateTime($config['start_date']);
+                $endDate = new \DateTime($config['end_date']);
 
                 $soa = $fintsClient->getStatementOfAccount(
                     $sepaAccountModel,
@@ -100,7 +103,7 @@ class ExportCommand extends BaseCommand
                     $table->setHeaders(['Booking date', 'Name', 'Amount']);
                 }
 
-                $ofxWriter = new OFXWriter($filename, $decimalMoneyFormatter);
+                $ofxWriter = new OFXWriter($filename, $decimalFormatter);
                 $ofxWriter->startDocument();
                 $ofxWriter->writeSignOnMessageSet();
                 $ofxWriter->startBankingMessageSet();

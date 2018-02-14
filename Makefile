@@ -16,7 +16,7 @@ clean:
 build:		## Build the PHAR
 build:
 	# Cleanup existing artefacts
-	rm -f fintsofx.phar
+	rm -f dist/fints-ofx.phar
 
 	# Remove unnecessary packages
 	composer install --no-dev --prefer-dist
@@ -37,7 +37,7 @@ build:
 ##---------------------------------------------------------------------------
 
 test:		## Run all the tests
-test: tu
+test: tu md cs cpd
 
 tu:		## Run the unit tests
 tu: vendor/bin/phpunit
@@ -50,6 +50,18 @@ tc: vendor/bin/phpunit
 tm:		## Run Infection
 tm:	vendor/bin/phpunit
 	phpdbg -qrr vendor/bin/infection
+
+md:		## Run mess detector
+md:	vendor/bin/phpmd
+	php vendor/bin/phpmd src/ text phpmd.xml
+
+cs:		## Run code sniffer
+cs:	vendor/bin/phpcs
+	php vendor/bin/phpcs --standard=PSR2 --extensions=php --colors -np src/
+
+cpd:		## Run copy paste detector
+cpd:	vendor/bin/phpcpd
+	php vendor/bin/phpcpd src/
 
 ##
 ## Rules from files
@@ -67,5 +79,14 @@ vendor/bamarni: composer.lock
 vendor/bin/phpunit: composer.lock
 	composer install
 
-fintsofx.phar: src vendor
+vendor/bin/phpcpd: composer.lock
+	composer install
+
+vendor/bin/phpcs: composer.lock
+	composer install
+
+vendor/bin/phpmd: composer.lock
+	composer install
+
+fints-ofx.phar: src vendor
 	$(MAKE) build

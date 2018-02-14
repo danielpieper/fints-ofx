@@ -1,0 +1,26 @@
+- repo: local
+  hooks:
+  - id: phpcs
+    name: 'PHP Codestyle'
+    files: \.(php)$
+    entry: vendor/bin/phpcs
+    language: script
+    args: ['--standard=PSR2', '--extensions=php', '--colors', '-np', 'src/']
+  - id: phpmd
+    name: 'PHP Mess Detector'
+    files: \.(php)$
+    entry: vendor/bin/phpmd
+    language: script
+    args: ['src/', 'text', 'phpmd.xml']
+  - id: phpcpd
+    name: 'PHP Copy & Paste Detector'
+    files: \.(php)$
+    entry: vendor/bin/phpcpd
+    language: script
+    args: ['src/']
+#  - id: phpunit
+#    name: 'PHP Unit Tests'
+#    files: \.(php)$
+#    entry: vendor/bin/phpunit
+#    language: script
+#    args: ['-c', 'phpunit.xml.dist', '--no-coverage']
