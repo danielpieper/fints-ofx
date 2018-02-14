@@ -7,14 +7,17 @@ use Symfony\Component\Console\Command\Command;
 
 class BaseCommand extends Command
 {
-    protected function getConfigurationFile()
+    protected function getConfigurationFile($currentDir = null)
     {
+        if (!$currentDir) {
+            $currentDir = realpath(__DIR__ . '/../../');
+        }
         $configDirectories = [
-            implode(DIRECTORY_SEPARATOR, [$this->getUserHomeFolder(), '.config', 'fints-ofx']) . DIRECTORY_SEPARATOR,
+            implode(DIRECTORY_SEPARATOR, [$this->getUserHomeFolder(), '.config', 'fints-ofx']),
         ];
 
         $locator = new FileLocator($configDirectories);
-        $configurationFile = $locator->locate('config.yaml', realpath(__DIR__ . '/../../'), true);
+        $configurationFile = $locator->locate('config.yaml', $currentDir, true);
 
         return $configurationFile;
     }
