@@ -39,7 +39,6 @@ class ExportCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filename = null;
         try {
             $filename = $this->getConfigurationFile();
         } catch (FileLocatorFileNotFoundException $e) {

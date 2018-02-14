@@ -7,9 +7,13 @@ use Symfony\Component\Console\Command\Command;
 
 class BaseCommand extends Command
 {
+    /**
+     * @param string|null $currentDir
+     * @return string
+     */
     protected function getConfigurationFile($currentDir = null)
     {
-        if (!$currentDir) {
+        if ($currentDir === null) {
             $currentDir = realpath(__DIR__ . '/../../');
         }
         $configDirectories = [
@@ -19,7 +23,7 @@ class BaseCommand extends Command
         $locator = new FileLocator($configDirectories);
         $configurationFile = $locator->locate('config.yaml', $currentDir, true);
 
-        return $configurationFile;
+        return (string)$configurationFile;
     }
 
     /**
@@ -27,7 +31,7 @@ class BaseCommand extends Command
      */
     protected function getUserHomeFolder()
     {
-        $home = getenv('HOME');
+        $home = (string)getenv('HOME');
         if (!empty($home)) {
             $home = rtrim($home, '/');
         } elseif (!empty($_SERVER['HOMEDRIVE']) && !empty($_SERVER['HOMEPATH'])) {

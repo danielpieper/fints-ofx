@@ -26,8 +26,7 @@ class ConfigureCommand extends BaseCommand
     {
         $filename = realpath(__DIR__ . '/../..') . 'config.yaml';
         if (file_exists($filename)) {
-            $output->writeln('Configuration file config.yaml already exists');
-            exit(0);
+            throw new \Exception('Configuration file config.yaml already exists');
         }
         $config = <<<EOF
 start_date: 1 month ago
