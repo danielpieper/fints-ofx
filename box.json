@@ -17,7 +17,7 @@
     }
   ],
   "git-version": "package_version",
-  "main": "bin/fintsofx",
-  "output": "dist/fintsofx.phar",
+  "main": "bin/fints-ofx",
+  "output": "dist/fints-ofx.phar",
   "stub": true
 }

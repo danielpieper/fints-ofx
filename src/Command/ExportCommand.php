@@ -12,7 +12,7 @@ use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
 use danielpieper\FintsOfx\Config\AppConfiguration;
 use Symfony\Component\Config\Definition\Processor;
 
-class ExportCommand extends Command
+class ExportCommand extends BaseCommand
 {
     protected function configure()
     {
@@ -37,10 +37,12 @@ class ExportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filename = realpath(__DIR__ . '/../../') . 'config.yaml';
-        if (!file_exists($filename)) {
+        $filename = null;
+        try {
+            $filename = $this->getConfigurationFile();
+        } catch (FileLocatorFileNotFoundException $e) {
             $output->writeln('config.yaml not found. Please run fints-ofx configure.');
-            exit(1);
+            throw $e;
         }
 
         // Load configuration
