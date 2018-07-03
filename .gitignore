@@ -11,4 +11,5 @@ config.yaml
 .idea
 *.ofx
 fintsofx.phar
+box.phar
 /dist
